@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 
+// Safe API base (used in both dev and prod)
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 const Contact = () => {
@@ -19,19 +20,24 @@ const Contact = () => {
     try {
       const response = await fetch(`${API_BASE_URL}/api/send-email`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(payload),
       });
 
-      if (response.ok) {
-        toast.success("Message sent successfully!", { id: loadingToast });
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        toast.success("✅ Message sent!", { id: loadingToast });
         formRef.current.reset();
       } else {
-        toast.error("Failed to send message.", { id: loadingToast });
+        console.error("❌ Backend error:", result);
+        toast.error(result.error || "Failed to send message", { id: loadingToast });
       }
     } catch (err) {
-      console.error(err);
-      toast.error("An error occurred.", { id: loadingToast });
+      console.error("❌ Fetch error:", err);
+      toast.error("An error occurred. Try again.", { id: loadingToast });
     } finally {
       setIsSubmitting(false);
     }

@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const { Resend } = require("resend");
-require("dotenv").config();
+require("dotenv").config({ path: "./backend/.env" });
 
 const app = express();
 const PORT = process.env.PORT || 5000;

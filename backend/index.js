@@ -4,7 +4,7 @@ const { Resend } = require("resend");
 const path = require("path");
 
 // Load .env file from backend directory (when deployed, Render injects it directly)
-require("dotenv").config({ path: path.join(__dirname, ".env") });
+require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;

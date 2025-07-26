@@ -1,18 +1,22 @@
 const express = require("express");
 const cors = require("cors");
 const { Resend } = require("resend");
-require('dotenv').config();
+const path = require("path");
+
+// Load .env file from backend directory (when deployed, Render injects it directly)
+require("dotenv").config({ path: path.join(__dirname, ".env") });
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Middlewares
 app.use(cors());
 app.use(express.json());
 
 // Initialize Resend
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Basic sanitizer to escape HTML special characters
+// Basic HTML sanitizer
 const sanitize = (str) =>
   String(str)
     .replace(/</g, "&lt;")
@@ -20,11 +24,11 @@ const sanitize = (str) =>
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 
-// Email route
+// API route
 app.post("/api/send-email", async (req, res) => {
   const { name, email, message } = req.body;
 
-  // Validate input
+  // Validate inputs
   if (!name || !email || !message) {
     return res.status(400).json({ error: "All fields are required." });
   }
@@ -49,7 +53,7 @@ app.post("/api/send-email", async (req, res) => {
             </tr>
             <tr>
               <td style="font-weight: 600; padding: 8px 0;">Email:</td>
-              <td style="padding: 8px 0;"><a href="mailto:${cleanEmail}" style="color: #000; text-decoration: none;">${cleanEmail}</a></td>
+              <td style="padding: 8px 0;"><a href="mailto:${cleanEmail}" style="color: #000;">${cleanEmail}</a></td>
             </tr>
           </table>
 
@@ -68,14 +72,19 @@ app.post("/api/send-email", async (req, res) => {
     console.log("✅ Email sent:", data);
     res.status(200).json({ success: true });
   } catch (error) {
-    console.error("❌ Error sending email:", error);
+    console.error("❌ Error sending email:", error.message || error);
     res.status(500).json({ error: "Failed to send email" });
   }
 });
 
-// Start server
+// Default route for checking API is alive
+app.get("/", (req, res) => {
+  res.send("Backend API is live ✅");
+});
+
+// Start the server
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
 
 module.exports = app;

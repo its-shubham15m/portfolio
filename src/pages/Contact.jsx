@@ -1,19 +1,23 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { toast } from "react-hot-toast";
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 const Contact = () => {
   const formRef = useRef();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const sendEmail = async (e) => {
     e.preventDefault();
 
     const loadingToast = toast.loading("Sending your message...");
+    setIsSubmitting(true);
 
     const formData = new FormData(formRef.current);
     const payload = Object.fromEntries(formData.entries());
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/send-email`, {
+      const response = await fetch(`${API_BASE_URL}/api/send-email`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -28,15 +32,20 @@ const Contact = () => {
     } catch (err) {
       console.error(err);
       toast.error("An error occurred.", { id: loadingToast });
+    } finally {
+      setIsSubmitting(false);
     }
   };
-
 
   return (
     <section className="bg-none py-20 px-6 md:px-16 max-w-4xl mx-auto">
       <h2 className="text-3xl md:text-5xl font-bold text-center text-zinc-900 mb-12">Contact Me</h2>
 
-      <form ref={formRef} onSubmit={sendEmail} className="bg-white p-8 rounded-xl shadow-lg space-y-6 border border-zinc-200">
+      <form
+        ref={formRef}
+        onSubmit={sendEmail}
+        className="bg-white p-8 rounded-xl shadow-lg space-y-6 border border-zinc-200"
+      >
         <div>
           <label className="block text-zinc-700 font-semibold mb-1">Full Name</label>
           <input
@@ -69,9 +78,14 @@ const Contact = () => {
 
         <button
           type="submit"
-          className="bg-main-blue text-white px-6 py-3 rounded-full transition font-semibold cursor-pointer"
+          disabled={isSubmitting}
+          className={`px-6 py-3 rounded-full font-semibold transition ${
+            isSubmitting
+              ? "bg-gray-400 cursor-not-allowed text-white"
+              : "bg-main-blue text-white hover:bg-blue-700"
+          }`}
         >
-          Send Message
+          {isSubmitting ? "Sending..." : "Send Message"}
         </button>
       </form>
     </section>

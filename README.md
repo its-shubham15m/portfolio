@@ -89,9 +89,9 @@ npm run dev
 ## 📧 Contact
 
 **Shubham Gupta**
-📮 [shubhamgupta15m@gmail.com](mailto:shubhamgupta15m@gmail.com)
-🔗 [LinkedIn](https://linkedin.com/in/its-shubham15m)
-🔗 [GitHub](https://github.com/its-shubham15m)
+- 📮 [shubhamgupta15m@gmail.com](mailto:shubhamgupta15m@gmail.com)
+- 🔗 [LinkedIn](https://linkedin.com/in/its-shubham15m)
+- 🔗 [GitHub](https://github.com/its-shubham15m)
 
 ---
 

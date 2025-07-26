@@ -32,7 +32,6 @@ This project demonstrates:
 
 ```bash
 src/
-├── backend/  
 ├── assets/               # All project and certificate images
 ├── pages/                # Main routed pages (Home, About, Contact, etc.)
 │   ├── Home.jsx
@@ -51,10 +50,7 @@ src/
 │   └── ResumeWindow.jsx
 ├── App.jsx               # RouterProvider with layout
 ├── index.css             # Tailwind and custom styles
-├── main.jsx              # Entry point
-├── .env
-├── vite.config.js
-└── README.md
+└── main.jsx              # Entry point
 ```
 
 ---
@@ -72,8 +68,8 @@ src/
 ## 📦 Installation & Run Locally
 
 ```bash
-git clone https://github.com/its-shubham15m/shubham-portfolio.git
-cd shubham-portfolio
+git clone https://github.com/its-shubham15m/portfolio.git
+cd portfolio
 npm install
 npm run dev
 ```
@@ -82,7 +78,7 @@ npm run dev
 
 ## 🌐 Live Link
 
-*Deployed link (optional)*
+[Website -> https://shubham-aiml.vercel.app/](https://shubham-aiml.vercel.app/)
 
 ---
 
